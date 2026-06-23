@@ -1,0 +1,132 @@
+{
+  "doshas": {
+    "Vata": {
+      "characteristics": "Governed by Air and Space elements. Qualities are dry, light, cold, rough, subtle, mobile, and clear. Regulates movement, nerve impulses, breathing, and elimination.",
+      "imbalance_symptoms": [
+        "Dry skin or lips",
+        "Anxiety, fear, or restlessness",
+        "Insomnia or interrupted sleep",
+        "Constipation, gas, or bloating",
+        "Physical fatigue or muscle spasms",
+        "Cold hands and feet"
+      ],
+      "guidance": "Favor warm, cooked, nourishing, and slightly oily foods. Maintain a regular daily routine for sleeping, eating, and working. Focus on grounding activities like gentle yoga, meditation, and self-massage (Abhyanga) with warm sesame oil. Avoid cold, raw, dry, or light foods."
+    },
+    "Pitta": {
+      "characteristics": "Governed by Fire and Water elements. Qualities are oily, sharp, hot, light, spreading, and liquid. Regulates digestion, metabolism, body temperature, and understanding.",
+      "imbalance_symptoms": [
+        "Irritability, anger, or impatience",
+        "Acid reflux, heartburn, or loose stools",
+        "Skin rashes, acne, or inflammation",
+        "Excessive body heat or sweating",
+        "Red, burning eyes",
+        "Sensory overload"
+      ],
+      "guidance": "Favor cooling, hydrating, and mildly spiced foods. Keep hydrated and spend time in nature (especially near water or under the moonlight). Practice moderation in work and exercise, avoiding the midday heat. Practice cooling pranayama (like Sitali) and favor soothing self-massage with coconut oil. Avoid hot, spicy, oily, salty, or highly acidic foods."
+    },
+    "Kapha": {
+      "characteristics": "Governed by Earth and Water elements. Qualities are heavy, slow, cool, oily, smooth, dense, soft, stable, and cloudy. Regulates structure, lubrication, fluid balance, and stability.",
+      "imbalance_symptoms": [
+        "Lethargy, drowsiness, or oversleeping",
+        "Weight gain or slow metabolism",
+        "Congestion, excess mucus, or sinus issues",
+        "Fluid retention or swelling",
+        "Feeling possessive, stubborn, or depressed",
+        "Cold, clammy skin"
+      ],
+      "guidance": "Favor light, warm, dry, and spicy foods. Incorporate regular, invigorating exercise into your daily routine. Wake up early (before sunrise) and avoid daytime napping. Seek variety and mental stimulation. Practice stimulating self-massage (Udvartana) using dry powders or warm mustard oil. Avoid heavy, sweet, cold, oily, or salty foods."
+    }
+  },
+  "herbs": [
+    {
+      "name": "Ashwagandha",
+      "balances": ["Vata", "Kapha"],
+      "use_note": "Traditionally used to support stress response, calm the nervous system, and promote physical strength."
+    },
+    {
+      "name": "Ginger",
+      "balances": ["Vata", "Kapha"],
+      "use_note": "Traditionally used to enhance digestive fire (Agni), alleviate bloating, and warm the body."
+    },
+    {
+      "name": "Turmeric",
+      "balances": ["Vata", "Pitta", "Kapha"],
+      "use_note": "Traditionally used to support healthy joints, improve skin complexion, and reduce inflammation."
+    },
+    {
+      "name": "Amalaki (Amla)",
+      "balances": ["Pitta"],
+      "use_note": "Traditionally used to support immune function, nourish tissues, and act as a powerful cooling antioxidant."
+    },
+    {
+      "name": "Shatavari",
+      "balances": ["Pitta", "Vata"],
+      "use_note": "Traditionally used to support female reproductive health, hydrate bodily tissues, and soothe the digestive tract."
+    },
+    {
+      "name": "Holy Basil (Tulsi)",
+      "balances": ["Vata", "Kapha"],
+      "use_note": "Traditionally used to support respiratory wellness, ease stress, and promote mental clarity."
+    },
+    {
+      "name": "Triphala",
+      "balances": ["Vata", "Pitta", "Kapha"],
+      "use_note": "Traditionally used as a gentle daily digestive cleanser, supporting regular elimination and nutrient absorption."
+    },
+    {
+      "name": "Brahmi (Bacopa)",
+      "balances": ["Vata", "Pitta", "Kapha"],
+      "use_note": "Traditionally used to enhance memory, support cognitive performance, and calm an overactive mind."
+    },
+    {
+      "name": "Cardamom",
+      "balances": ["Vata", "Kapha"],
+      "use_note": "Traditionally used to relieve gas, soothe stomach discomfort, and clear excess Kapha mucus."
+    },
+    {
+      "name": "Licorice (Yashthimadhu)",
+      "balances": ["Vata", "Pitta"],
+      "use_note": "Traditionally used to soothe irritated mucus membranes, support throat health, and nourish the adrenal glands."
+    },
+    {
+      "name": "Fennel",
+      "balances": ["Vata", "Pitta", "Kapha"],
+      "use_note": "Traditionally used to ease abdominal cramps, reduce bloating, and gently stimulate digestion without overheating."
+    },
+    {
+      "name": "Cumin",
+      "balances": ["Vata", "Pitta", "Kapha"],
+      "use_note": "Traditionally used to stimulate appetite, support digestion, and reduce gas and bloating."
+    },
+    {
+      "name": "Neem",
+      "balances": ["Pitta", "Kapha"],
+      "use_note": "Traditionally used to purify the blood, support skin health, and cool systemic heat."
+    },
+    {
+      "name": "Guduchi",
+      "balances": ["Vata", "Pitta", "Kapha"],
+      "use_note": "Traditionally used to support immune strength, clear toxins (Ama), and maintain a healthy body temperature."
+    },
+    {
+      "name": "Pippali (Long Pepper)",
+      "balances": ["Kapha"],
+      "use_note": "Traditionally used to clear excess Kapha mucus from the lungs and stimulate slow digestion."
+    }
+  ],
+  "red_flags": [
+    "chest pain",
+    "difficulty breathing",
+    "severe bleeding",
+    "loss of consciousness",
+    "sudden numbness",
+    "sudden weakness",
+    "difficulty speaking",
+    "sudden severe headache",
+    "high fever with stiff neck",
+    "severe abdominal pain",
+    "thoughts of self-harm",
+    "swallowing difficulty",
+    "severe allergic reaction"
+  ]
+}
