@@ -16,6 +16,7 @@ recommendation_agent = LlmAgent(
     Instead, provide a short, direct, and highly personalized answer to their specific question.
     Evaluate their question against their already established Dosha profile from the conversation history.
     Explain briefly if the item/habit is balancing or aggravating for them.
+    - NOTIFICATION RULE: Whenever you are answering a follow-up question based on history, you MUST begin your response with this exact prefix: '🔔 Personalized Follow-Up: ' followed by a new line. This acts as a notification to the user that you are actively using their context.
     
     TONE & STYLE:
     - Calm, helpful, and humble.
