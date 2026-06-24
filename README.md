@@ -1,189 +1,136 @@
-# Ayurcare Agent - Ayurveda Health Guidance System
+# PranaAI — Your Personalized Ayurvedic Concierge Agent
 
-Ayurcare Agent is a serverless, multi-agent health-guidance system utilizing traditional Ayurveda principles. It is built with the Google Agent Development Kit (ADK), featuring a standalone Model Context Protocol (MCP) server, rigorous safety controls, and a React frontend.
-
----
-
-## 1. Problem Statement
-Many health systems lack structured wellness advice tailored to an individual’s physical constitution (Prakriti). Furthermore, generic AI health models present significant risks: they may recommend mild home remedies for emergency conditions (e.g., advising herbal tea for chest pain), prescribe precise dosages without clinical basis, or make unauthorized claims to cure diseases. Ayurcare Agent addresses this by utilizing a gated multi-agent workflow to conduct a friendly intake, determine constitution, fetch safe Ayurvedic knowledge, and review recommendations against strict medical red flags.
+> **An Intelligent Multi-Agent Ayurvedic System Leveraging Google Agent Development Kit (ADK) and Gemini 2.5 Flash for Safe, Personalised Wellness Guidance.**
 
 ---
 
-## 2. Why Agents? (vs. A Single LLM Call)
-A single LLM call attempting to handle intake, Prakriti analysis, tool execution, formatting, and safety checks faces the following limitations:
-- **Instruction Drift & Bloat:** As the prompt grows to accommodate all rules, the model is more likely to miss details (e.g., forgetting the disclaimer or ignoring a red flag symptom).
-- **Security Risks:** System instructions can be leaked or overridden by prompt injection if the evaluation and sanitization stages are not isolated.
-- **De-coupled Concerns:** Chaining specialized agents allows each model to focus on a singular goal with unique instructions, leading to higher reliability:
-  - **Intake Agent:** Restricts itself to gathering demographics and lifestyle details without dispensing advice.
-  - **Prakriti Agent:** Analyzes the structured intake JSON to determine the dosha.
-  - **Knowledge Agent:** Interacts with the local MCP server database.
-  - **Recommendation Agent:** Formulates the wellness copy in a humble, wellness-oriented tone.
-  - **Safety Agent:** Evaluates the final advice with absolute veto power, ensuring clinical safety.
+## 1. Overview
+**PranaAI** is a state-of-the-art traditional wellness assistant designed to bring the age-old wisdom of Ayurveda into the modern digital era. It utilizes the **Google Agent Development Kit (ADK)** and the **Gemini 2.5 Flash** model to analyze a user's symptoms, lifestyle, age, and duration of concerns to calculate their dominant **Dosha constitution** (Vata, Pitta, Kapha, or a combination). 
+
+By referencing a curated Ayurvedic knowledge database and using context-aware memory, PranaAI provides highly tailored, safe, and actionable daily routines, dietary recommendations, and traditional herbal suggestions, accompanied by a dynamic PDF report generation engine.
 
 ---
 
-## 3. Architecture Diagram
+## 2. Multi-Agent Architecture
+PranaAI is powered by a sequential multi-agent pipeline built on top of the Google ADK. Each agent executes a highly specialized role:
+
 ```
-              +-----------------------------------------+
-              |               User Message              |
-              +-----------------------------------------+
-                                   |
-                                   v
-              +-----------------------------------------+
-              |           Input Sanitizer               |
-              | (Strips injection words from user text) |
-              +-----------------------------------------+
-                                   |
-                                   v
-              +-----------------------------------------+
-              |          1. Intake Agent                |
-              |  (Converses; asks 1 question at a time) |
-              +-----------------------------------------+
-                                   |
-                       Intake JSON | (Cascades once intake is done)
-                                   v
-              +-----------------------------------------+
-              |          2. Prakriti Agent              |
-              | (Computes Vata / Pitta / Kapha scores)  |
-              +-----------------------------------------+
-                                   |
-                      Prakriti JSON|
-                                   v
-              +-----------------------------------------+
-              |          3. Knowledge Agent             |
-              |      (Connects to MCP Server via        | <---+
-              |        StdioConnectionParams)           |     |
-              +-----------------------------------------+     | MCP Protocol
-                                   |                          v
-                     Raw retrieved |             +-------------------------+
-                     Ayurveda data |             |       MCP Server        |
-                                   v             |  (ayurveda_server.py)   |
-              +-----------------------------------------+ |  Exposes:               |
-              |        4. Recommendation Agent          | |  - check_red_flag      |
-              | (Drafts diet/lifestyle/herb suggestions)| |  - get_dosha_info       |
-              +-----------------------------------------+ |  - get_herb_recs        |
-                                   |                      +-------------------------+
-                      Unchecked rec|
-                                   v
-              +-----------------------------------------+
-              |           5. Safety Agent               |
-              |     - Red Flag Override: Vetoes and     |
-              |       replaces with Emergency Alert     |
-              |     - QA Clean: Strips herbal dosages   |
-              |       and ensures wellness disclaimer   |
-              +-----------------------------------------+
-                                   |
-                                   v
-              +-----------------------------------------+
-              |             Final Output                |
-              |      (To Flask API / React Client)      |
-              +-----------------------------------------+
+[User Message]
+      │
+      ▼
+┌──────────────┐
+│ Intake Agent │ ──► Collects symptoms, lifestyle, age range, and duration
+└──────────────┘
+      │
+      ▼
+┌─────────────────┐
+│ Prakriti Expert │ ──► Analyzes intake summary and determines Dosha breakdown
+└─────────────────┘
+      │
+      ▼
+┌─────────────────┐
+│ Knowledge Agent │ ──► Connects to local MCP servers to fetch validated guidance
+└─────────────────┘
+      │
+      ▼
+┌──────────────────────┐
+│ Recommendation Agent │ ──► Synthesizes data into dietary and routine tips
+└──────────────────────┘
+      │
+      ▼
+┌──────────────┐
+│ Safety Guard │ ──► Runs a final validation check for medical red flags
+└──────────────┘
+      │
+      ▼
+[Final Clean Response]
 ```
 
+- **Intake Agent:** Empathically collects user data (symptom, lifestyle details, age range, duration) one question at a time and packages it into a structured JSON payload once complete.
+- **Prakriti Expert:** Interprets the intake summary and performs keyword-based or semantic mapping to calculate the percentage breakdown of Vata, Pitta, and Kapha.
+- **Knowledge Agent:** Connects dynamically to local Model Context Protocol (MCP) servers (including the **Seasonal Awareness Server**) to retrieve traditional characteristics and seasonal guidance.
+- **Recommendation Agent:** Formulates highly personalized advice (such as morning checklists and customized food evaluations) based on the user's history and current constitution.
+- **Safety Guard:** Serves as a final check block to scan for clinical red flags (e.g. severe chest pain, shortness of breath) and instantly escalates to a medical disclaimer and suggestion to consult a doctor.
+
 ---
 
-## 4. Setup & Running Locally
+## 3. Key Features
+
+- **Follow-up Q&A Memory:** Supports continuous follow-up conversations using context memory. Users can ask specific queries (e.g. *"how to use basil seeds without losing weight"*), and the agent provides direct, actionable answers rather than repeating general dosha evaluations.
+- **Safety Guardrails (Red Flag Detection):** Scans user messages for critical symptoms and immediately suspends suggestions, returning a prominent warning block to see a doctor.
+- **PDF Report Generation:** Once the intake is complete and the Dosha state is generated, a clean, nature-themed "Download Weekly Wellness Report" button appears. Users can click this to dynamically download a beautifully styled PDF report containing their personalized Ayurvedic profile, clinical reasoning, and database guidelines.
+
+---
+
+## 4. Tech Stack
+
+- **Frontend:** React, Vite, CSS3 (with nature-themed design tokens and hover animations)
+- **Backend:** Flask, Flask-CORS, Python 3.12, ReportLab (for PDF generation)
+- **AI Engine:** Gemini 2.5 Flash, Google Agent Development Kit (ADK)
+- **Model Context Protocol (MCP):** Stdio MCP Server for seasonal and health knowledge lookups
+- **Deployment Platform:** Vercel (for frontend static hosting and backend python serverless functions)
+
+---
+
+## 5. Live Demo
+
+🌐 **Live Demo Link:** `[Live Demo Link Here]`
+
+---
+
+## 6. Local Setup Instructions
+
+Follow these simple steps to run the frontend and backend servers locally:
 
 ### Prerequisites
 - Python 3.10+
 - Node.js 18+
 
-### Step-by-Step Local Run
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/udisha1/ayurcare-agent.git
+cd ayurcare-agent
+```
 
-1. **Clone the Repository & Navigate:**
-   ```bash
-   cd C:/Users/UDISHA/.gemini/antigravity/scratch/ayurcare-agent
-   ```
+### Step 2: Configure Environment Variables
+Create a `.env` file in the root directory:
+```env
+GOOGLE_API_KEY=your_gemini_api_key_here
+```
 
-2. **Initialize Python Virtual Environment & Install Dependencies:**
+### Step 3: Install Backend Dependencies & Run
+1. Create and activate a Python virtual environment:
    ```bash
    python -m venv venv
    # On Windows:
-   venv\Scripts\activate
+   .\venv\Scripts\activate
    # On macOS/Linux:
    source venv/bin/activate
-   
+   ```
+2. Install the required libraries:
+   ```bash
    pip install -r requirements.txt
    ```
-
-3. **Setup Local Environment Variable:**
-   Create a `.env` file in the root directory:
-   ```env
-   GOOGLE_API_KEY=your_actual_gemini_api_key_here
-   ```
-   *(Note: If the key is missing or if network connection fails, the application will automatically enter **Mock/Fallback Mode** utilizing the local JSON database, allowing offline testing).*
-
-4. **Launch Backend and Frontend Simultaneously:**
-   Ensure you have configured `frontend/.env.local` to point to the backend:
-   ```env
-   VITE_API_URL=http://127.0.0.1:5000
-   ```
-   To run both servers concurrently with a single command on Windows (PowerShell), execute:
-   ```powershell
-   Start-Process python -ArgumentList "api/agent.py"; cd frontend; npm run dev
-   ```
-   This will spin up the Flask backend in a separate terminal window and start the Vite React development server in your current window. Navigate to the local URL (usually `http://localhost:5173`) to interact with the application.
-
-5. **Run Local Integration Tests:**
-   You can verify the database tools and mock fallback pipeline end-to-end using:
+3. Run the Flask server:
    ```bash
-   python scratch/test_pipeline.py
+   python api/agent.py
    ```
+   *The backend will start on `http://127.0.0.1:5000`.*
 
----
-
-## 5. Deployment Steps (Vercel)
-
-Ayurcare Agent is designed as a decoupled architecture: the Flask API deploys as Python serverless functions, and the React client deploys as a static static site.
-
-### Backend API Deployment
-1. Log in via Vercel CLI from the root folder:
+### Step 4: Install Frontend Dependencies & Run
+1. Open a new terminal window/tab and navigate to the `frontend/` folder:
    ```bash
-   vercel login
+   cd frontend
    ```
-2. Run initial deployment:
+2. Install Node packages:
    ```bash
-   vercel
+   npm install
    ```
-3. Set the environment variable in your Vercel Project dashboard:
-   - Name: `GOOGLE_API_KEY`
-   - Value: `<your_gemini_api_key>`
-4. Promote to production:
+3. Start the Vite development server:
    ```bash
-   vercel --prod
+   npm run dev
    ```
-   *Take note of the deployed backend URL (e.g. `https://ayurcare-agent-api.vercel.app`).*
+   *The frontend will start on `http://localhost:5173/`.*
 
-### Frontend Client Deployment
-1. Navigate to the `frontend/` folder.
-2. Initialize a new project on Vercel:
-   ```bash
-   vercel
-   ```
-3. Set the frontend environment variable in the Vercel dashboard:
-   - Name: `VITE_API_URL`
-   - Value: `<your_deployed_backend_url>`
-4. Promote the client to production:
-   ```bash
-   vercel --prod
-   ```
-
-### Testing the Deployed API via curl
-```bash
-curl -X POST https://<your_deployed_backend_url>/api/agent \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Hello, I have a persistent headache.", "session_id": "curl_session_id"}'
-```
-
----
-
-## 6. Course Concepts Demonstrated
-
-- **Multi-Agent Orchestration via ADK:** Leverages the ADK `Workflow` engine to construct sequential and conditional execution graphs. It handles intermediate state preservation, allowing multiple non-interactive agents to execute in cascading succession during a single turn.
-- **Model Context Protocol (MCP):** Implements a standalone MCP server (`ayurveda_server.py`) exposing custom Python tools. The `knowledge_agent` establishes dynamic process-based communication using `MCPToolset` and `StdioConnectionParams`.
-- **Advanced Security Features:**
-  - **Input Sanitization:** Intercepts prompt injection attacks inside the orchestrator using automated regex filters.
-  - **Zero-Log Credential Policy:** Restricts API key retrieval exclusively to system environment variables and prevents printing keys in error traces.
-  - **Rate Limiting:** Protects serverless resources with a rolling window rate-limiter (15 requests/minute).
-  - **Safety-Gating (Safety Agent):** Enforces clinical boundary rules, overriding recommendations if a red-flag condition occurs.
-- **Serverless-Optimized Design:** Implements lazy loading of ADK agents inside `api/agent.py` to minimize cold-start times when running on Vercel serverless containers.
+### Step 5: Test the Integration
+Open your browser and navigate to `http://localhost:5173/` to interact with your local instance of PranaAI.
