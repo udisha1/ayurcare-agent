@@ -328,13 +328,24 @@ def run_mock_workflow(session: dict, message_text: str) -> str:
             checklist_text = "\n".join(checklist_lines)
             
             return (
-                "🔔 Personalized Follow-Up:\n"
+                "🔔 **Personalized Follow-Up:**\n"
                 f"Here is your verified daily morning checklist for your dominant {dominant_dosha} constitution:\n\n"
                 f"{checklist_text}\n\n"
                 "Disclaimer: This is traditional Ayurvedic wellness guidance, not a medical diagnosis or treatment plan."
             )
             
         elif "basil seed" in msg_lower or "basil seeds" in msg_lower:
+            # Check if user is asking how to consume them without losing weight
+            if any(kw in msg_lower for kw in ["weight", "reduce", "how", "what can i do"]):
+                return (
+                    "🔔 **Personalized Follow-Up:**\n"
+                    f"To consume basil seeds without reducing weight or causing excess weight loss under your dominant {dominant_dosha} constitution, traditional Ayurvedic guidance suggests:\n\n"
+                    "- **Soak in milk**: Soak the basil seeds in warm milk (cow's milk or almond milk) instead of water to add nourishing, building (Brimhana) qualities.\n"
+                    "- **Combine with sweet/heavy foods**: Mix the soaked seeds into a bowl of warm oatmeal, pudding, or a naturally sweet smoothie to counterbalance their cooling, scraping nature.\n"
+                    "- **Limit frequency**: Use them in moderation (no more than 1 teaspoon daily) and avoid consuming them on an empty stomach.\n\n"
+                    "Disclaimer: This is traditional Ayurvedic wellness guidance, not a medical diagnosis or treatment plan."
+                )
+                
             if "pitta" in dominant_dosha.lower():
                 explanation = "balancing (beneficial) because they are cooling and help soothe the excess heat associated with Pitta."
             elif "vata" in dominant_dosha.lower():
@@ -343,7 +354,7 @@ def run_mock_workflow(session: dict, message_text: str) -> str:
                 explanation = "balancing for Kapha but should be consumed in moderation due to their heavy, grounding nature."
             
             return (
-                "🔔 Personalized Follow-Up:\n"
+                "🔔 **Personalized Follow-Up:**\n"
                 f"Evaluating basil seeds for your dominant {dominant_dosha} constitution:\n\n"
                 f"Basil seeds are {explanation}\n\n"
                 "Disclaimer: This is traditional Ayurvedic wellness guidance, not a medical diagnosis or treatment plan."
@@ -356,7 +367,7 @@ def run_mock_workflow(session: dict, message_text: str) -> str:
                 explanation = "balancing for Kapha in moderation as its warm, dry, and stimulating properties help reduce Kapha heaviness."
                 
             return (
-                "🔔 Personalized Follow-Up:\n"
+                "🔔 **Personalized Follow-Up:**\n"
                 f"Evaluating coffee for your dominant {dominant_dosha} constitution:\n\n"
                 f"Coffee is {explanation}\n\n"
                 "Disclaimer: This is traditional Ayurvedic wellness guidance, not a medical diagnosis or treatment plan."
@@ -364,7 +375,7 @@ def run_mock_workflow(session: dict, message_text: str) -> str:
             
         else:
             return (
-                "🔔 Personalized Follow-Up:\n"
+                "🔔 **Personalized Follow-Up:**\n"
                 f"For your dominant {dominant_dosha} constitution, traditional wellness suggests favoring habits and foods that bring balance. Since you asked about '{message_text}', please ensure it is warm, grounding, and easily digestible to support your current state.\n\n"
                 "Disclaimer: This is traditional Ayurvedic wellness guidance, not a medical diagnosis or treatment plan."
             )
