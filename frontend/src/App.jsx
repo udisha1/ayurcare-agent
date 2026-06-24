@@ -32,6 +32,13 @@ function App() {
     scrollToBottom();
   }, [messages, loading]);
 
+  const handleDownloadReport = () => {
+    const currentSessionId = sessionId;
+    if (!currentSessionId || !doshaState) return;
+    const downloadUrl = '/api/download_report?session_id=' + currentSessionId;
+    window.open(downloadUrl, '_blank');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
@@ -41,7 +48,7 @@ function App() {
     setMessages((prev) => [...prev, { text: userMessage, sender: 'user', isWarning: false }]);
     setLoading(true);
 
-    const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000';
+    const API_URL = import.meta.env.VITE_API_URL || '';
 
     try {
       const response = await fetch(`${API_URL}/api/agent`, {
@@ -172,6 +179,17 @@ function App() {
           )}
           <div ref={messagesEndRef} />
         </div>
+
+        {doshaState && (
+          <div className="download-report-container">
+            <button 
+              onClick={handleDownloadReport}
+              className="download-button"
+            >
+              Download Weekly Wellness Report
+            </button>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="input-form">
           <input
