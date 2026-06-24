@@ -1,4 +1,7 @@
 flask
 flask-cors
 google-adk
+google-genai
+python-dotenv
 reportlab
+mcp
