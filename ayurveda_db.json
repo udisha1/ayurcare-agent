@@ -1,0 +1,49 @@
+{
+  "doshas": {
+    "Vata": {
+      "characteristics": [
+        "Governed by space and air elements.",
+        "Associated with movement, flow, communication, and change.",
+        "Qualities are light, cold, dry, rough, mobile, and subtle.",
+        "When balanced: creative, enthusiastic, energetic, and adaptable.",
+        "When imbalanced: anxious, fearful, dry skin, constipation, and insomnia."
+      ],
+      "balancing_routines": [
+        "Wake up early and maintain a consistent daily schedule to ground the mobile energy.",
+        "Massage the body with warm sesame oil (Abhyanga) before bathing to reduce dryness and coldness.",
+        "Eat warm, cooked, moist, and grounding meals (such as soups and stews) with healthy fats like ghee.",
+        "Practice alternate nostril breathing (Nadi Shodhana Pranayama) to calm the nervous system."
+      ]
+    },
+    "Pitta": {
+      "characteristics": [
+        "Governed by fire and water elements.",
+        "Associated with transformation, digestion, metabolism, and energy production.",
+        "Qualities are hot, sharp, light, liquid, oily, and spreading.",
+        "When balanced: intelligent, focused, organized, and courageous.",
+        "When imbalanced: irritable, angry, prone to inflammation, acid reflux, and skin rashes."
+      ],
+      "balancing_routines": [
+        "Incorporate cooling foods into the diet (sweet fruits, leafy greens, cucumber, coconut water).",
+        "Perform a gentle massage using cooling oils (like coconut or sunflower oil) to soothe excess heat.",
+        "Avoid intense exercise during the hottest parts of the day; prefer calming walks in nature.",
+        "Practice sheetali pranayama (cooling breath technique) to release heat and reduce anger."
+      ]
+    },
+    "Kapha": {
+      "characteristics": [
+        "Governed by earth and water elements.",
+        "Associated with structure, stability, lubrication, and cohesion.",
+        "Qualities are heavy, cold, moist, slow, steady, soft, and static.",
+        "When balanced: calm, loving, compassionate, loyal, and physically strong.",
+        "When imbalanced: lethargic, prone to weight gain, congestion, attachment, and depression."
+      ],
+      "balancing_routines": [
+        "Wake up before sunrise (by 6:00 AM) to prevent accumulation of heavy, sluggish energy.",
+        "Engage in vigorous daily exercise (like sun salutations or brisk walking) to stimulate circulation and heat.",
+        "Eat warm, light, dry, and spicy foods to balance coldness and moisture; minimize dairy and sweet foods.",
+        "Perform dry skin brushing (Garshana) to stimulate lymphatic flow and reduce congestion."
+      ]
+    }
+  }
+}

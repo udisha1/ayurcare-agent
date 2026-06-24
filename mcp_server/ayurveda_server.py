@@ -10,7 +10,7 @@ def load_kb():
     with open(kb_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
-@mcp.tool
+@mcp.tool()
 def get_dosha_info(dosha: str) -> str:
     """Retrieve characteristics, imbalance symptoms, and general lifestyle/diet guidance for a specific dosha (Vata, Pitta, Kapha)."""
     kb = load_kb()
@@ -19,7 +19,7 @@ def get_dosha_info(dosha: str) -> str:
         return json.dumps(kb["doshas"][d], indent=2)
     return f"Dosha '{dosha}' not found. Available doshas: Vata, Pitta, Kapha."
 
-@mcp.tool
+@mcp.tool()
 def get_herb_recommendations(dosha: str, symptom: str) -> str:
     """Get recommendations of traditional Ayurvedic herbs/foods that balance the given dosha and match the general symptom description."""
     kb = load_kb()
@@ -41,7 +41,7 @@ def get_herb_recommendations(dosha: str, symptom: str) -> str:
         
     return json.dumps(matching_herbs, indent=2)
 
-@mcp.tool
+@mcp.tool()
 def check_red_flag(symptom: str) -> bool:
     """Check if a symptom matches any 'red flag' conditions requiring medical escalation. Returns True if a match is found."""
     kb = load_kb()
