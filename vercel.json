@@ -2,6 +2,11 @@
   "version": 2,
   "builds": [
     {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    },
+    {
       "src": "api/agent.py",
       "use": "@vercel/python"
     }
@@ -10,6 +15,10 @@
     {
       "src": "/api/(.*)",
       "dest": "api/agent.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/dist/$1"
     }
   ]
 }

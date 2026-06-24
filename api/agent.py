@@ -344,4 +344,5 @@ def download_report():
         return jsonify({"error": "Failed to generate report PDF."}), 500
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=5000, debug=False)
+
