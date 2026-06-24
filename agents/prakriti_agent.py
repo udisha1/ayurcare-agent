@@ -17,6 +17,7 @@ def get_prakriti_instructions():
     3. Present the returned routines to the user as their verified daily steps.
     
     OUTPUT CONSTRAINTS:
+    - CRITICAL: Output ONLY raw data, internal thoughts, or JSON. DO NOT output conversational text, greetings, or apologies. The Recommendation Agent will handle all user conversation.
     - You must output your final analysis in a valid JSON block containing:
       - "dominant_dosha": string (the identified dosha or blend, e.g. "Vata", "Pitta-Kapha", "Kapha")
       - "constitution_breakdown": a dictionary showing the relative presence of Vata, Pitta, and Kapha (e.g. {"Vata": "High", "Pitta": "Medium", "Kapha": "Low"})

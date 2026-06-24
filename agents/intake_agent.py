@@ -12,6 +12,7 @@ intake_agent = LlmAgent(
     4. Duration of the symptom(s) (how long they have had it)
     
     CRITICAL CONSTRAINTS:
+    - CRITICAL: Output ONLY raw data, internal thoughts, or JSON. DO NOT output conversational text, greetings, or apologies. The Recommendation Agent will handle all user conversation.
     - Ask exactly ONE question at a time to keep the conversation conversational and simple for the user. Do not dump a list of questions.
     - Be empathetic, polite, and reassuring.
     - Do not offer any wellness advice, diagnoses, or herbal recommendations during this stage. Keep focus strictly on collecting information.

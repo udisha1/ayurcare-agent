@@ -126,27 +126,50 @@ def handle_agent():
             parts=[types.Part.from_text(text=sanitized_message)]
         )
         
-        response_text = ""
+        node_responses = {}
         async for event in runner.run_async(
             user_id=session_id,
             session_id=session_id,
             new_message=content
         ):
+            node_name = getattr(event, "node_name", "unknown")
             if event.content and event.content.parts:
                 for part in event.content.parts:
                     if part.text:
-                        text = part.text
-                        response_text += text
+                        if node_name not in node_responses:
+                            node_responses[node_name] = ""
+                        node_responses[node_name] += part.text
                         
                         # Extract prakriti_agent's JSON output if emitted
-                        if '"dominant_dosha"' in text:
+                        if node_name == "prakriti_agent" or '"dominant_dosha"' in part.text:
                             try:
-                                json_match = re.search(r"\{.*\}", text, re.DOTALL)
+                                full_prakriti_text = node_responses.get("prakriti_agent", "")
+                                json_match = re.search(r"\{.*\}", full_prakriti_text, re.DOTALL)
                                 if json_match:
                                     prakriti_data = json.loads(json_match.group(0))
                                     session_store[session_id]["dosha_state"] = prakriti_data
                             except Exception:
                                 pass
+
+        # Determine final response by picking output from the final executed node
+        execution_order = [
+            'safety_agent',
+            'recommendation_agent',
+            'knowledge_agent',
+            'prakriti_agent',
+            'intake_agent'
+        ]
+        
+        response_text = ""
+        for node in execution_order:
+            if node in node_responses and node_responses[node].strip():
+                response_text = node_responses[node].strip()
+                break
+                
+        # If no custom nodes matched, fallback to any available output
+        if not response_text and node_responses:
+            response_text = list(node_responses.values())[-1].strip()
+
         return response_text
 
     try:
@@ -183,12 +206,31 @@ def handle_agent():
     if not clean_reply:
         clean_reply = reply.strip()
 
+    # Clean repeating/echoing responses and apply single disclaimer format
+    clean_reply = cleanup_workflow_output(clean_reply)
+
     return jsonify({
         "reply": clean_reply,
         "dosha_state": session_store[session_id]["dosha_state"]
     }), 200
 
+def cleanup_workflow_output(text: str) -> str:
+    if not text:
+        return ""
+    
+    disclaimer_pattern = r"Disclaimer:\s*This\s*is\s*traditional\s*Ayurvedic\s*wellness\s*guidance.*"
+    parts = re.split(disclaimer_pattern, text, flags=re.IGNORECASE)
+    
+    cleaned_parts = [p.strip() for p in parts if p.strip()]
+    if cleaned_parts:
+        final_text = cleaned_parts[-1]
+        final_text = re.sub(r"^[\s\.\-\:\,\;]+", "", final_text).strip()
+        return final_text + "\n\nDisclaimer: This is traditional Ayurvedic wellness guidance, not a medical diagnosis or treatment plan."
+        
+    return text
+
 def load_ayurveda_knowledge():
+
     current_dir = os.path.dirname(os.path.abspath(__file__))
     kb_path = os.path.join(current_dir, "..", "data", "ayurveda_knowledge.json")
     with open(kb_path, "r", encoding="utf-8") as f:
